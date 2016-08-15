@@ -5,7 +5,6 @@ def soccerSuperstition(n, k, t):
 	validNumbers = findValidNumbers(k)
 
 	allPositions = findAllPositions(n, validNumbers)
-	#print(len(allPositions))
 
 	findValidPositions(t, validNumbers, allPositions)
 	#print(len(validPositions))
@@ -71,6 +70,10 @@ class TestSoccerSuperstition(unittest.TestCase):
 	
 	def test_findValidNumbers(self):
 		self.assertEqual(findValidNumbers(2), [0, 1, 10, 11, 12, 21, 22, 23, 32, 33, 34, 43, 44, 45, 54, 55, 56, 65, 66, 67, 76, 77, 78, 87, 88, 89, 98, 99])
+	
+	def test_findAllPositions(self):
+		validNumbers = findValidNumbers(2)
+		self.assertEqual(len(findAllPositions(3, validNumbers)), 21952)
 		
 	def test_soccerSuperstition(self):
 		self.assertEqual(soccerSuperstition(3, 2, 16), 27)
