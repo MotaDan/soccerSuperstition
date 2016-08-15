@@ -62,9 +62,17 @@ def makeRotations(combo):
 	return rotations
 
 import unittest
+import time
 
 # Testing class
 class TestSoccerSuperstition(unittest.TestCase):
+	def setUp(self):
+		self.startTime = time.time()
+	
+	def tearDown(self):
+		t = time.time() - self.startTime
+		print "Ran in %.3fs " % (t),
+	
 	def test_makeRotations(self):
 		testList = [1, 2, 3]
 		self.assertEqual(makeRotations(testList), [[1, 2, 3], [2, 3, 1], [3, 1, 2]])
