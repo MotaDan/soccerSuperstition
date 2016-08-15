@@ -64,6 +64,9 @@ class TestSoccerSuperstition(unittest.TestCase):
 	def test_makeRotations(self):
 		testList = [1, 2, 3]
 		self.assertEqual(makeRotations(testList), [[1, 2, 3], [2, 3, 1], [3, 1, 2]])
+	
+	def test_soccerSuperstition(self):
+		self.assertEqual(soccerSuperstition(3, 2, 16), 27)
 		
 if __name__ == '__main__':
 	runner = unittest.TextTestRunner(verbosity = 2)
