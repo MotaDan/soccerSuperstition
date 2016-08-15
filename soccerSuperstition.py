@@ -20,7 +20,7 @@ def findValidNumbers(k):
 		
 	return validNumbers
 
-# finds all the combinations of the valid numbers. Stores them as positions in the valid numbers list.
+# Finds all the combinations of the valid numbers. Stores them as positions in the valid numbers list.
 def findAllPositions(n, validNumbers):
 	allPositions = [[0 for x in range(n)]]
 	
@@ -61,10 +61,22 @@ def makeRotations(combo):
 	
 	return rotations
 
+# Checks if a list of numbers has been seen before. seenCombos is a dictionary with a frozenset key and list of list data.
+def hasComboBeenSeen(seenCombos, combo):
+	if frozenset(combo) in seenCombos:
+		if combo not in seenCombos[frozenset(combo)]:
+			seenCombos[frozenset(combo)].extend(makeRotations(combo))
+			return False
+		else:
+			return True
+	else:
+		seenCombos[frozenset(combo)] = makeRotations(combo)
+		return False
+
+# Testing class
 import unittest
 import time
 
-# Testing class
 class TestSoccerSuperstition(unittest.TestCase):
 	def setUp(self):
 		self.startTime = time.time()
@@ -76,6 +88,24 @@ class TestSoccerSuperstition(unittest.TestCase):
 	def test_makeRotations(self):
 		testList = [1, 2, 3]
 		self.assertEqual(makeRotations(testList), [[1, 2, 3], [2, 3, 1], [3, 1, 2]])
+		
+	def test_hasComboBeenSeen1(self):
+		testList = [0, 0, 0]
+		testSeenCombos = {frozenset([0, 0, 0]): [[0, 0, 0]]}
+		self.assertTrue(hasComboBeenSeen(testSeenCombos, testList))
+		self.assertEqual(testSeenCombos, {frozenset([0, 0, 0]): [[0, 0, 0]]})
+		
+	def test_hasComboBeenSeen2(self):
+		testList = [0, 0, 0]
+		testSeenCombos = {}
+		self.assertFalse(hasComboBeenSeen(testSeenCombos, testList))
+		self.assertEqual(testSeenCombos, {frozenset([0, 0, 0]): [[0, 0, 0], [0, 0, 0], [0, 0, 0]]})
+		
+	def test_hasComboBeenSeen3(self):
+		testList = [0, 1, 2]
+		testSeenCombos = {frozenset([0, 2, 1]): [[0, 2, 1], [2, 1, 0], [1, 0, 2]]}
+		self.assertFalse(hasComboBeenSeen(testSeenCombos, testList))
+		self.assertEqual(testSeenCombos, {frozenset([0, 1, 2]): [[0, 2, 1], [2, 1, 0], [1, 0, 2], [0, 1, 2], [1, 2, 0], [2, 0, 1]]})
 	
 	def test_findValidNumbers(self):
 		self.assertEqual(findValidNumbers(2), [0, 1, 10, 11, 12, 21, 22, 23, 32, 33, 34, 43, 44, 45, 54, 55, 56, 65, 66, 67, 76, 77, 78, 87, 88, 89, 98, 99])
@@ -88,7 +118,7 @@ class TestSoccerSuperstition(unittest.TestCase):
 		validNumbers = findValidNumbers(2)
 		allPositions = findAllPositions(3, validNumbers)
 		self.assertEqual(findValidPositions(16, validNumbers, allPositions), [[27, 25, 24], [26, 27, 24], [27, 27, 24], [25, 25, 25], [27, 25, 25], [24, 27, 25], [25, 27, 25], [26, 27, 25], [27, 27, 25], [27, 24, 26], [27, 25, 26], [26, 26, 26], [27, 26, 26], [26, 27, 26], [27, 27, 26], [25, 24, 27], [27, 24, 27], [25, 25, 27], [27, 25, 27], [24, 26, 27], [25, 26, 27], [26, 26, 27], [27, 26, 27], [24, 27, 27], [25, 27, 27], [26, 27, 27], [27, 27, 27]])
-		
+
 	def test_soccerSuperstition01(self):
 		self.assertEqual(soccerSuperstition(3, 2, 16), 27)
 		
@@ -133,7 +163,7 @@ class TestSoccerSuperstition(unittest.TestCase):
 		
 	def test_soccerSuperstition15(self):
 		self.assertEqual(soccerSuperstition(3, 7, 16), 27)
-		
+
 if __name__ == '__main__':
 	runner = unittest.TextTestRunner(verbosity = 2)
 	unittest.main(testRunner = runner)
