@@ -113,11 +113,14 @@ class TestSoccerSuperstition(unittest.TestCase):
 	def test_findAllPositions(self):
 		validNumbers = findValidNumbers(2)
 		self.assertEqual(len(findAllPositions(3, validNumbers)), 21952)
+		self.assertEqual(validNumbers, findValidNumbers(2))
 		
 	def test_findValidPositions(self):
 		validNumbers = findValidNumbers(2)
 		allPositions = findAllPositions(3, validNumbers)
 		self.assertEqual(findValidPositions(16, validNumbers, allPositions), [[27, 25, 24], [26, 27, 24], [27, 27, 24], [25, 25, 25], [27, 25, 25], [24, 27, 25], [25, 27, 25], [26, 27, 25], [27, 27, 25], [27, 24, 26], [27, 25, 26], [26, 26, 26], [27, 26, 26], [26, 27, 26], [27, 27, 26], [25, 24, 27], [27, 24, 27], [25, 25, 27], [27, 25, 27], [24, 26, 27], [25, 26, 27], [26, 26, 27], [27, 26, 27], [24, 27, 27], [25, 27, 27], [26, 27, 27], [27, 27, 27]])
+		self.assertEqual(validNumbers, findValidNumbers(2))
+		self.assertEqual(allPositions, findAllPositions(3, validNumbers))
 
 	def test_soccerSuperstition01(self):
 		self.assertEqual(soccerSuperstition(3, 2, 16), 27)
