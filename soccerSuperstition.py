@@ -89,8 +89,50 @@ class TestSoccerSuperstition(unittest.TestCase):
 		allPositions = findAllPositions(3, validNumbers)
 		self.assertEqual(findValidPositions(16, validNumbers, allPositions), [[27, 25, 24], [26, 27, 24], [27, 27, 24], [25, 25, 25], [27, 25, 25], [24, 27, 25], [25, 27, 25], [26, 27, 25], [27, 27, 25], [27, 24, 26], [27, 25, 26], [26, 26, 26], [27, 26, 26], [26, 27, 26], [27, 27, 26], [25, 24, 27], [27, 24, 27], [25, 25, 27], [27, 25, 27], [24, 26, 27], [25, 26, 27], [26, 26, 27], [27, 26, 27], [24, 27, 27], [25, 27, 27], [26, 27, 27], [27, 27, 27]])
 		
-	def test_soccerSuperstition(self):
+	def test_soccerSuperstition01(self):
 		self.assertEqual(soccerSuperstition(3, 2, 16), 27)
+		
+	def test_soccerSuperstition02(self):
+		self.assertEqual(soccerSuperstition(3, 10, 17), 1)
+	
+	def test_soccerSuperstition03(self):
+		self.assertEqual(soccerSuperstition(3, 1, 1), 921)
+		
+	def test_soccerSuperstition04(self):
+		self.assertEqual(soccerSuperstition(3, 10, 10), 46656)
+		
+	def test_soccerSuperstition05(self):
+		self.assertEqual(soccerSuperstition(3, 10, 12), 9261)
+		
+	def test_soccerSuperstition06(self):
+		self.assertEqual(soccerSuperstition(3, 9, 15), 216)
+		
+	def test_soccerSuperstition07(self):
+		self.assertEqual(soccerSuperstition(3, 5, 7), 119580)
+	
+	def test_soccerSuperstition08(self):
+		self.assertEqual(soccerSuperstition(3, 1, 16), 4)
+		
+	def test_soccerSuperstition09(self):
+		self.assertEqual(soccerSuperstition(3, 4, 17), 1)
+		
+	def test_soccerSuperstition10(self):
+		self.assertEqual(soccerSuperstition(3, 8, 14), 1000)
+		
+	def test_soccerSuperstition11(self):
+		self.assertEqual(soccerSuperstition(3, 3, 11), 6937)
+		
+	def test_soccerSuperstition12(self):
+		self.assertEqual(soccerSuperstition(3, 2, 8), 6309)
+	
+	def test_soccerSuperstition13(self):
+		self.assertEqual(soccerSuperstition(3, 7, 4), 456001)
+		
+	def test_soccerSuperstition14(self):
+		self.assertEqual(soccerSuperstition(3, 8, 8), 154107)
+		
+	def test_soccerSuperstition15(self):
+		self.assertEqual(soccerSuperstition(3, 7, 16), 27)
 		
 if __name__ == '__main__':
 	runner = unittest.TextTestRunner(verbosity = 2)
