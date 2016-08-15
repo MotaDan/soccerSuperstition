@@ -1,13 +1,10 @@
-validPositions = []
-
 # https://codefights.com/challenge/RRFe66MNdgwokujxD/main
 def soccerSuperstition(n, k, t):
 	validNumbers = findValidNumbers(k)
 
 	allPositions = findAllPositions(n, validNumbers)
 
-	findValidPositions(t, validNumbers, allPositions)
-	#print(len(validPositions))
+	validPositions = findValidPositions(t, validNumbers, allPositions)
 	#for pos in validPositions:
 		#print(str(validNumbers[pos[0]]) + " " + str(validNumbers[pos[1]]) + " " + str(validNumbers[pos[2]]))
 		
@@ -41,6 +38,8 @@ def findAllPositions(n, validNumbers):
 
 # Checks that with two adjacent numbers ab cd the sum of b and c are greater than t.
 def findValidPositions(t, validNumbers, allPositions):
+	validPositions = []
+	
 	for pos in allPositions:
 		for i in range(len(pos)):
 			if ((validNumbers[pos[i]] % 10) + int(validNumbers[pos[(i+1) % len(pos)]] / 10)) > t:
@@ -48,6 +47,8 @@ def findValidPositions(t, validNumbers, allPositions):
 					validPositions.append(list(pos))
 			else:
 				break
+			
+	return validPositions
 
 # Takes in a list of numbers and returns a list of all the rotations of the list.
 def makeRotations(combo):
@@ -74,6 +75,11 @@ class TestSoccerSuperstition(unittest.TestCase):
 	def test_findAllPositions(self):
 		validNumbers = findValidNumbers(2)
 		self.assertEqual(len(findAllPositions(3, validNumbers)), 21952)
+		
+	def test_findValidPositions(self):
+		validNumbers = findValidNumbers(2)
+		allPositions = findAllPositions(3, validNumbers)
+		self.assertEqual(findValidPositions(16, validNumbers, allPositions), [[27, 25, 24], [26, 27, 24], [27, 27, 24], [25, 25, 25], [27, 25, 25], [24, 27, 25], [25, 27, 25], [26, 27, 25], [27, 27, 25], [27, 24, 26], [27, 25, 26], [26, 26, 26], [27, 26, 26], [26, 27, 26], [27, 27, 26], [25, 24, 27], [27, 24, 27], [25, 25, 27], [27, 25, 27], [24, 26, 27], [25, 26, 27], [26, 26, 27], [27, 26, 27], [24, 27, 27], [25, 27, 27], [26, 27, 27], [27, 27, 27]])
 		
 	def test_soccerSuperstition(self):
 		self.assertEqual(soccerSuperstition(3, 2, 16), 27)
