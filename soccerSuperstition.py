@@ -1,14 +1,13 @@
-allPositions = [[0, 0, 0]]
 validPositions = []
 
 # https://codefights.com/challenge/RRFe66MNdgwokujxD/main
 def soccerSuperstition(n, k, t):
 	validNumbers = findValidNumbers(k)
 
-	findAllPositions(n)
+	allPositions = findAllPositions(n, validNumbers)
 	#print(len(allPositions))
 
-	findValidPositions(n, t)
+	findValidPositions(t, validNumbers, allPositions)
 	#print(len(validPositions))
 	#for pos in validPositions:
 		#print(str(validNumbers[pos[0]]) + " " + str(validNumbers[pos[1]]) + " " + str(validNumbers[pos[2]]))
@@ -26,7 +25,9 @@ def findValidNumbers(k):
 	return validNumbers
 
 # finds all the combinations of the valid numbers. Stores them as positions in the valid numbers list.
-def findAllPositions(n):
+def findAllPositions(n, validNumbers):
+	allPositions = [[0 for x in range(n)]]
+	
 	for i in range(1, pow(len(validNumbers), n)):
 		allPositions.append(list(allPositions[i-1]))
 
@@ -36,9 +37,11 @@ def findAllPositions(n):
 				break
 			else:
 				allPositions[i][j] = 0
+			
+	return allPositions
 
 # Checks that with two adjacent numbers ab cd the sum of b and c are greater than t.
-def findValidPositions(n, t):
+def findValidPositions(t, validNumbers, allPositions):
 	for pos in allPositions:
 		for i in range(len(pos)):
 			if ((validNumbers[pos[i]] % 10) + int(validNumbers[pos[(i+1) % len(pos)]] / 10)) > t:
