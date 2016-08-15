@@ -51,3 +51,14 @@ def makeRotations(combo):
 		rotations.append(temp)
 	
 	return rotations
+
+import unittest
+
+class TestSoccerSuperstition(unittest.TestCase):
+	def test_makeRotations(self):
+		testList = [1, 2, 3]
+		self.assertEqual(makeRotations(testList), [[1, 2, 3], [2, 3, 1], [3, 1, 2]])
+		
+if __name__ == '__main__':
+	runner = unittest.TextTestRunner(verbosity = 2)
+	unittest.main(testRunner = runner)
