@@ -1,12 +1,9 @@
-validNumbers = []
 allPositions = [[0, 0, 0]]
 validPositions = []
 
 # https://codefights.com/challenge/RRFe66MNdgwokujxD/main
 def soccerSuperstition(n, k, t):
-	findValidNumbers(k)
-	#print(len(validNumbers))
-	#print(validNumbers)
+	validNumbers = findValidNumbers(k)
 
 	findAllPositions(n)
 	#print(len(allPositions))
@@ -20,9 +17,13 @@ def soccerSuperstition(n, k, t):
 
 # Finds all valid numbers. A number ab is valid if the difference between a and b is less than k.
 def findValidNumbers(k):
+	validNumbers = []
+	
 	for num in range(100):
 		if abs(num / 10 - num % 10) < k:
 			validNumbers.append(num)
+		
+	return validNumbers
 
 # finds all the combinations of the valid numbers. Stores them as positions in the valid numbers list.
 def findAllPositions(n):
@@ -65,6 +66,9 @@ class TestSoccerSuperstition(unittest.TestCase):
 		testList = [1, 2, 3]
 		self.assertEqual(makeRotations(testList), [[1, 2, 3], [2, 3, 1], [3, 1, 2]])
 	
+	def test_findValidNumbers(self):
+		self.assertEqual(findValidNumbers(2), [0, 1, 10, 11, 12, 21, 22, 23, 32, 33, 34, 43, 44, 45, 54, 55, 56, 65, 66, 67, 76, 77, 78, 87, 88, 89, 98, 99])
+		
 	def test_soccerSuperstition(self):
 		self.assertEqual(soccerSuperstition(3, 2, 16), 27)
 		
