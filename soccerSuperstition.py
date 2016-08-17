@@ -2,9 +2,11 @@
 def soccerSuperstition(n, k, t):
 	validNumbers = findValidNumbers(k)
 
-	allPositions = findAllPositions(n, validNumbers)
+	allPositions = findAllPositionsEnhanced(n, validNumbers)
 
-	validPositions = findValidPositions(t, validNumbers, allPositions)
+	validPositions = findValidPositionsEnhanced(t, validNumbers, allPositions)
+
+	# Prints the values of the returned validPositions.
 	#for pos in validPositions:
 		#print(str(validNumbers[pos[0]]) + " " + str(validNumbers[pos[1]]) + " " + str(validNumbers[pos[2]]))
 		
@@ -36,6 +38,31 @@ def findAllPositions(n, validNumbers):
 			
 	return allPositions
 
+# Finds all the combinations of the valid numbers. Stores them as positions in the valid numbers list.
+def findAllPositionsEnhanced(n, validNumbers):
+	allPositions = [[0 for x in range(n)]]
+	seenCombos = {}
+	uniquePositions = []
+
+	for i in range(1, pow(len(validNumbers), n)):
+		allPositions.append(list(allPositions[i-1]))
+
+		for j in range(n):
+			if allPositions[i-1][j] + 1 < len(validNumbers):
+				allPositions[i][j] = allPositions[i-1][j] + 1
+
+				if not hasComboBeenSeen(seenCombos, allPositions[i]):
+					uniquePositions.append(allPositions[i])
+
+				break
+			else:
+				allPositions[i][j] = 0
+
+				if not hasComboBeenSeen(seenCombos, allPositions[i]):
+					uniquePositions.append(allPositions[i])
+
+	return uniquePositions
+
 # Checks that with two adjacent numbers ab cd the sum of b and c are greater than t.
 def findValidPositions(t, validNumbers, allPositions):
 	validPositions = []
@@ -50,14 +77,33 @@ def findValidPositions(t, validNumbers, allPositions):
 			
 	return validPositions
 
+# Checks that with two adjacent numbers ab cd the sum of b and c are greater than t.
+def findValidPositionsEnhanced(t, validNumbers, allPositions):
+	validPositions = []
+
+	for pos in allPositions:
+		for i in range(len(pos)):
+			if ((validNumbers[pos[i]] % 10) + int(validNumbers[pos[(i+1) % len(pos)]] / 10)) > t:
+				if i == len(pos) - 1:
+					validPositions.extend(makeRotations(pos))
+			else:
+				break
+
+	return validPositions
+
 # Takes in a list of numbers and returns a list of all the rotations of the list.
 def makeRotations(combo):
 	rotations = []
 	
-	for i in range(len(combo)):
-		temp = combo[i:]
-		temp += combo[:i]
-		rotations.append(temp)
+	# Checking that the combo is not the same value repeated in all positions.
+	if len(set(combo)) > 1:
+		for i in range(len(combo)):
+			temp = combo[i:]
+			temp += combo[:i]
+			rotations.append(temp)
+	else:
+		rotations.append(combo)
+		return rotations
 	
 	return rotations
 
@@ -89,6 +135,10 @@ class TestSoccerSuperstition(unittest.TestCase):
 		testList = [1, 2, 3]
 		self.assertEqual(makeRotations(testList), [[1, 2, 3], [2, 3, 1], [3, 1, 2]])
 		
+	def test_makeRotations2(self):
+		testList = [1, 1, 1]
+		self.assertEqual(makeRotations(testList), [[1, 1, 1]])
+
 	def test_hasComboBeenSeen1(self):
 		testList = [0, 0, 0]
 		testSeenCombos = {frozenset([0, 0, 0]): [[0, 0, 0]]}
@@ -99,7 +149,7 @@ class TestSoccerSuperstition(unittest.TestCase):
 		testList = [0, 0, 0]
 		testSeenCombos = {}
 		self.assertFalse(hasComboBeenSeen(testSeenCombos, testList))
-		self.assertEqual(testSeenCombos, {frozenset([0, 0, 0]): [[0, 0, 0], [0, 0, 0], [0, 0, 0]]})
+		self.assertEqual(testSeenCombos, {frozenset([0, 0, 0]): [[0, 0, 0]]})
 		
 	def test_hasComboBeenSeen3(self):
 		testList = [0, 1, 2]
@@ -115,16 +165,32 @@ class TestSoccerSuperstition(unittest.TestCase):
 		self.assertEqual(len(findAllPositions(3, validNumbers)), 21952)
 		self.assertEqual(validNumbers, findValidNumbers(2))
 		
+	def test_findAllPositionsEnhanced(self):
+		validNumbers = findValidNumbers(2)
+		self.assertEqual(len(findAllPositionsEnhanced(3, validNumbers)), 7337)
+		self.assertEqual(validNumbers, findValidNumbers(2))
+
 	def test_findValidPositions(self):
 		validNumbers = findValidNumbers(2)
 		allPositions = findAllPositions(3, validNumbers)
-		self.assertEqual(findValidPositions(16, validNumbers, allPositions), [[27, 25, 24], [26, 27, 24], [27, 27, 24], [25, 25, 25], [27, 25, 25], [24, 27, 25], [25, 27, 25], [26, 27, 25], [27, 27, 25], [27, 24, 26], [27, 25, 26], [26, 26, 26], [27, 26, 26], [26, 27, 26], [27, 27, 26], [25, 24, 27], [27, 24, 27], [25, 25, 27], [27, 25, 27], [24, 26, 27], [25, 26, 27], [26, 26, 27], [27, 26, 27], [24, 27, 27], [25, 27, 27], [26, 27, 27], [27, 27, 27]])
+		validPositions = findValidPositions(16, validNumbers, allPositions)
+		self.assertEqual(len(validPositions), 27)
+		self.assertEqual(validPositions, [[27, 25, 24], [26, 27, 24], [27, 27, 24], [25, 25, 25], [27, 25, 25], [24, 27, 25], [25, 27, 25], [26, 27, 25], [27, 27, 25], [27, 24, 26], [27, 25, 26], [26, 26, 26], [27, 26, 26], [26, 27, 26], [27, 27, 26], [25, 24, 27], [27, 24, 27], [25, 25, 27], [27, 25, 27], [24, 26, 27], [25, 26, 27], [26, 26, 27], [27, 26, 27], [24, 27, 27], [25, 27, 27], [26, 27, 27], [27, 27, 27]])
 		self.assertEqual(validNumbers, findValidNumbers(2))
 		self.assertEqual(allPositions, findAllPositions(3, validNumbers))
 
+	def test_findValidPositionsEnhanced(self):
+		validNumbers = findValidNumbers(2)
+		allPositions = findAllPositionsEnhanced(3, validNumbers)
+		validPositions = findValidPositionsEnhanced(16, validNumbers, allPositions)
+		self.assertEqual(len(validPositions), 27)
+		self.assertEqual(validPositions, [[27, 25, 24], [25, 24, 27], [24, 27, 25], [26, 27, 24], [27, 24, 26], [24, 26, 27], [27, 27, 24], [27, 24, 27], [24, 27, 27], [25, 25, 25], [27, 25, 25], [25, 25, 27], [25, 27, 25], [26, 27, 25], [27, 25, 26], [25, 26, 27], [27, 27, 25], [27, 25, 27], [25, 27, 27], [26, 26, 26], [27, 26, 26], [26, 26, 27], [26, 27, 26], [27, 27, 26], [27, 26, 27], [26, 27, 27], [27, 27, 27]])
+		self.assertEqual(validNumbers, findValidNumbers(2))
+		self.assertEqual(allPositions, findAllPositionsEnhanced(3, validNumbers))
+
 	def test_soccerSuperstition01(self):
 		self.assertEqual(soccerSuperstition(3, 2, 16), 27)
-		
+
 	def test_soccerSuperstition02(self):
 		self.assertEqual(soccerSuperstition(3, 10, 17), 1)
 	
