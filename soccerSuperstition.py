@@ -162,38 +162,78 @@ class TestSoccerSuperstition(unittest.TestCase):
 	
 	def test_findAllPositions(self):
 		validNumbers = findValidNumbers(2)
+		validNumbersClean = validNumbers
 		self.assertEqual(len(findAllPositions(3, validNumbers)), 21952)
-		self.assertEqual(validNumbers, findValidNumbers(2))
+		self.assertEqual(validNumbers, validNumbersClean)
+	
+	def test_findAllPositionsTime(self):
+		validNumbers = validNumbersTime
+		validNumbersClean = validNumbers
+		allPositions = findAllPositions(3, validNumbers)
+		self.assertEqual(len(allPositions), 1000000)
+		self.assertEqual(validNumbers, validNumbersClean)
 		
 	def test_findAllPositionsEnhanced(self):
 		validNumbers = findValidNumbers(2)
+		validNumbersClean = validNumbers
 		self.assertEqual(len(findAllPositionsEnhanced(3, validNumbers)), 7337)
-		self.assertEqual(validNumbers, findValidNumbers(2))
+		self.assertEqual(validNumbers, validNumbersClean)
+	
+	def test_findAllPositionsEnhancedTime(self):
+		validNumbers = validNumbersTime
+		validNumbersClean = validNumbers
+		allPositionsEnhanced = findAllPositionsEnhanced(3, validNumbers)
+		self.assertEqual(len(allPositionsEnhanced), 333401)
+		self.assertEqual(validNumbers, validNumbersClean)
 
 	def test_findValidPositions(self):
 		validNumbers = findValidNumbers(2)
+		validNumbersClean = validNumbers
 		allPositions = findAllPositions(3, validNumbers)
+		allPositionsClean = allPositions
 		validPositions = findValidPositions(16, validNumbers, allPositions)
 		self.assertEqual(len(validPositions), 27)
 		self.assertEqual(validPositions, [[27, 25, 24], [26, 27, 24], [27, 27, 24], [25, 25, 25], [27, 25, 25], [24, 27, 25], [25, 27, 25], [26, 27, 25], [27, 27, 25], [27, 24, 26], [27, 25, 26], [26, 26, 26], [27, 26, 26], [26, 27, 26], [27, 27, 26], [25, 24, 27], [27, 24, 27], [25, 25, 27], [27, 25, 27], [24, 26, 27], [25, 26, 27], [26, 26, 27], [27, 26, 27], [24, 27, 27], [25, 27, 27], [26, 27, 27], [27, 27, 27]])
-		self.assertEqual(validNumbers, findValidNumbers(2))
-		self.assertEqual(allPositions, findAllPositions(3, validNumbers))
+		self.assertEqual(validNumbers, validNumbersClean)
+		self.assertEqual(allPositions, allPositionsClean)
+	
+	def test_findValidPositionsTime(self):
+		validNumbers = validNumbersTime
+		validNumbersClean = validNumbers
+		allPositions = allPositionsTime
+		allPositionsClean = allPositions
+		validPositions = findValidPositions(17, validNumbers, allPositions)
+		self.assertEqual(len(validPositions), 1)
+		self.assertEqual(validNumbers, validNumbersClean)
+		self.assertEqual(allPositions, allPositionsClean)
 
 	def test_findValidPositionsEnhanced(self):
 		validNumbers = findValidNumbers(2)
+		validNumbersClean = validNumbers
 		allPositions = findAllPositionsEnhanced(3, validNumbers)
+		allPositionsClean = allPositions
 		validPositions = findValidPositionsEnhanced(16, validNumbers, allPositions)
 		self.assertEqual(len(validPositions), 27)
 		self.assertEqual(validPositions, [[27, 25, 24], [25, 24, 27], [24, 27, 25], [26, 27, 24], [27, 24, 26], [24, 26, 27], [27, 27, 24], [27, 24, 27], [24, 27, 27], [25, 25, 25], [27, 25, 25], [25, 25, 27], [25, 27, 25], [26, 27, 25], [27, 25, 26], [25, 26, 27], [27, 27, 25], [27, 25, 27], [25, 27, 27], [26, 26, 26], [27, 26, 26], [26, 26, 27], [26, 27, 26], [27, 27, 26], [27, 26, 27], [26, 27, 27], [27, 27, 27]])
-		self.assertEqual(validNumbers, findValidNumbers(2))
-		self.assertEqual(allPositions, findAllPositionsEnhanced(3, validNumbers))
+		self.assertEqual(validNumbers, validNumbersClean)
+		self.assertEqual(allPositions, allPositionsClean)
+	
+	def test_findValidPositionsEnhancedTime(self):
+		validNumbers = validNumbersTime
+		validNumbersClean = validNumbers
+		allPositions = allPositionsEnhancedTime
+		allPositionsClean = allPositions
+		validPositions = findValidPositionsEnhanced(17, validNumbers, allPositions)
+		self.assertEqual(len(validPositions), 1)
+		self.assertEqual(validNumbers, validNumbersClean)
+		self.assertEqual(allPositions, allPositionsClean)
 
 	def test_soccerSuperstition01(self):
 		self.assertEqual(soccerSuperstition(3, 2, 16), 27)
 
 	def test_soccerSuperstition02(self):
 		self.assertEqual(soccerSuperstition(3, 10, 17), 1)
-	
+
 	def test_soccerSuperstition03(self):
 		self.assertEqual(soccerSuperstition(3, 1, 1), 921)
 		
@@ -234,5 +274,9 @@ class TestSoccerSuperstition(unittest.TestCase):
 		self.assertEqual(soccerSuperstition(3, 7, 16), 27)
 
 if __name__ == '__main__':
+	print "Preparing tests..."
+	validNumbersTime = findValidNumbers(10)
+	allPositionsTime = findAllPositions(3, validNumbersTime)
+	allPositionsEnhancedTime = findAllPositionsEnhanced(3, validNumbersTime)
 	runner = unittest.TextTestRunner(verbosity = 2)
 	unittest.main(testRunner = runner)
